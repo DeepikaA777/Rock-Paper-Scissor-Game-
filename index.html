@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rock Paper Scissors</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    /* Animated Gradient Background */
+    @keyframes gradient-x {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .animate-gradient-x {
+      background-size: 400% 400%;
+      animation: gradient-x 15s ease infinite;
+    }
+
+    /* Glassmorphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* Hand Animations */
+    .flip { transform: scaleX(-1); }
+    .shake { animation: shake 0.6s; }
+    @keyframes shake {
+      0% { transform: translateY(0); }
+      25% { transform: translateY(-10px); }
+      50% { transform: translateY(0); }
+      75% { transform: translateY(-10px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="animate-gradient-x bg-gradient-to-r from-purple-900 via-pink-700 to-indigo-800 text-white min-h-screen flex items-center justify-center relative overflow-hidden">
+
+  <!-- Start Page -->
+  <div id="start-page" class="glass p-8 rounded-xl text-center space-y-4">
+    <h1 class="text-5xl font-bold mb-6">Rock Paper Scissors</h1>
+    <p class="mb-4">Choose Game Mode:</p>
+    <div class="space-x-4">
+      <button onclick="chooseMode('computer')" class="bg-blue-600 px-6 py-2 rounded-lg hover:bg-blue-700 transition">Player vs Computer</button>
+      <button onclick="showNameInput()" class="bg-green-600 px-6 py-2 rounded-lg hover:bg-green-700 transition">Player vs Player</button>
+    </div>
+  </div>
+
+  <!-- Player Name Input Page -->
+  <div id="name-page" class="hidden glass p-8 rounded-xl text-center space-y-4">
+    <h2 class="text-2xl font-bold mb-4">Enter Player Names</h2>
+    <input id="player1-name" type="text" placeholder="Player 1 Name" class="mb-3 p-2 rounded text-black w-48">
+    <br>
+    <input id="player2-name" type="text" placeholder="Player 2 Name" class="mb-3 p-2 rounded text-black w-48">
+    <br>
+    <button onclick="startPvP()" class="bg-green-600 px-6 py-2 rounded-lg hover:bg-green-700 transition">Start Game</button>
+  </div>
+
+  <!-- Game Page -->
+  <div id="game-page" class="hidden glass p-8 rounded-xl text-center w-full max-w-2xl space-y-6">
+    <h2 id="mode-title" class="text-2xl font-bold mb-4"></h2>
+
+    <!-- Hands Display -->
+    <div class="flex justify-center items-center gap-16">
+      <div>
+        <p id="player1-label" class="font-bold mb-2">Player 1</p>
+        <img id="user1-img" src="assets/Rock.png" class="w-32 h-32">
+      </div>
+      <p class="text-xl font-bold">VS</p>
+      <div>
+        <p id="player2-label" class="font-bold mb-2">Player 2 / Computer</p>
+        <img id="user2-img" src="assets/Rock.png" class="w-32 h-32 flip">
+      </div>
+    </div>
+
+    <!-- Choices -->
+    <div class="mt-6 space-x-4">
+      <button onclick="play('Rock')" class="choice-btn bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600 transition">Rock</button>
+      <button onclick="play('Paper')" class="choice-btn bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600 transition">Paper</button>
+      <button onclick="play('Scissor')" class="choice-btn bg-gray-700 px-4 py-2 rounded-lg hover:bg-gray-600 transition">Scissor</button>
+    </div>
+
+    <!-- Winner -->
+    <p id="winner" class="text-xl font-bold mt-6">Winner: -</p>
+
+    <!-- PvC Scoreboard -->
+    <div id="score-pvc" class="mt-6 bg-gray-800 p-4 rounded-lg w-40 mx-auto flex flex-col items-center space-y-2">
+      <p id="wins" class="font-bold text-green-400">Wins: 0</p>
+      <p id="losses" class="font-bold text-red-400">Losses: 0</p>
+      <p id="draws" class="font-bold text-yellow-400">Draws: 0</p>
+    </div>
+
+    <!-- PvP Scoreboard -->
+    <div id="score-pvp" class="hidden mt-6 bg-gray-800 p-4 rounded-lg w-52 mx-auto flex flex-col items-center space-y-2">
+      <p id="p1Wins" class="font-bold text-green-400">Player 1 Wins: 0</p>
+      <p id="p2Wins" class="font-bold text-red-400">Player 2 Wins: 0</p>
+      <p id="pvpDraws" class="font-bold text-yellow-400">Draws: 0</p>
+    </div>
+
+    <!-- Buttons -->
+    <div class="mt-6 space-x-4">
+      <button onclick="resetGame()" class="bg-red-600 px-6 py-2 rounded-lg hover:bg-red-700 transition">Exit Game</button>
+      <button onclick="refreshScore()" class="bg-yellow-500 px-6 py-2 rounded-lg hover:bg-yellow-600 transition">Reset Score</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
